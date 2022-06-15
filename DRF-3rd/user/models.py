@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser):
-    username = models.CharField("사용자 계정", max_length=20, unique=True)
+    username = models.CharField("사용자 계정", max_length=20, unique=True, null=True, blank=True)
     email = models.EmailField("이메일 주소", max_length=100)
     password = models.CharField("비밀번호", max_length=256)
     fullname = models.CharField("이름", max_length=20)
@@ -79,7 +79,7 @@ class UserProfile(models.Model):
     # Add 전화번호
     # 외부 라이브러리인 phonenumber_field 패키지를 설치 후 사용하였습니다.
     # PhoneNumberField필드는 내부적으로 CharField공간을 기반으로하며 국제 전화 번호 표준에 따라 문자열 형태로 숫자를 저장합니다.
-    phone_number = PhoneNumberField("전화번호", unique=True, null=True,default='')
+    phone_number = PhoneNumberField("전화번호", unique=True, null=True, default='')
     
     # Add 성별
     GENDER_CHOICES =(
