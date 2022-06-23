@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>게시판입니다.</title>
+</head>
+<body>
+  <form method="post" action="{% url 'user:login' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="username">사용자ID</label>
+        <input type="text" class="form-control" name="username" id="username">
+    </div>
+    <div class="mb-3">
+        <label for="password">비밀번호</label>
+        <input type="password" class="form-control" name="password" id="password">
+    </div>
+    <button type="submit" class="btn btn-primary">로그인</button>
+  </form>
+  <a class="btn btn-secondary" href="{% url 'user:sign-up' %}">회원가입</a>
+
+  <br>
+
+  <!-- 만약 넘겨받은 messages 값이 있다면, -->
+  {% if messages %}
+    {% for message in messages %}
+      {{message}}
+    {% endfor %}
+  {% endif %}
+</body>
+</html>

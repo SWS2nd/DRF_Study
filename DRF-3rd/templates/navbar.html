@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'blog:home' %}">PostBoard</a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- 유저가 인증이 되어있다면(즉, 로그인 되어 있다면) -->
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user:user-inform' %}">사용자 프로필</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user:logout' %}">로그아웃</a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>

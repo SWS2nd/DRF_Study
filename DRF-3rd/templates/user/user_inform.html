@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    사용자 정보
+{% endblock %}
+
+{% block content %}
+    <div class="container timeline-container">
+        <div class="row">
+            <!-- 왼쪽 컬럼 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- 로그인 한 사용자의 username -->
+                        <h5 class="card-title">{{ user_name }}</h5>
+                        <!-- 로그인 한 사용자의 email -->
+                        <h5 class="card-title">{{ user_email }}</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른 쪽 컬럼-->
+            <div class="col-md-7">
+                <div class="row">
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!-- base.html이라는 파일 위에 추가해 주겠다는 의미. -->
+{% extends 'base.html' %}
+
+{% block title %}
+    회원가입
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="wrap">
+            <h2 class="title-center"> 회원가입 </h2>
+            <form class="form-area" method="POST" action="{% url 'user:sign-up' %}">
+                {% csrf_token %}
+                <div class="form-group mt-2 mb-2">
+                    <label for="username">이름</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="password2">비밀번호 확인</label>
+                    <input type="password" class="form-control" id="password2" name="password2">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="email">이메일</label>
+                    <input type="text" class="form-control" id="email" name="email">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="fullname">풀네임</label>
+                    <input type="text" class="form-control" id="fullname" name="fullname">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="preferred_products">선호상품</label>
+                    <input type="text" class="form-control" id="preferred_products" name="preferred_products">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="phone_number">전화번호</label>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="gender">성별</label>
+                    <input type="text" class="form-control" id="gender" name="gender">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="birth_date">생년월일</label>
+                    <input type="text" class="form-control" id="birth_date" name="birth_date">
+                </div>
+                <div class="form-group mt-2 mb-2">
+                    <label for="introduction">소개</label>
+                    <input type="text" class="form-control" id="introduction" name="introduction">
+                </div>
+                <!-- 만약 넘겨받은 error 값이 있다면, -->
+                {% if error %}
+                    <!-- alert 메시지로 넘겨받은 error의 값을 출력. -->
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                <hr>
+                <div style="float: right">
+                    <button type="submit" class="btn btn-primary">회원가입</button>
+                    <a href="{% url 'user:login' %}" class="btn btn-secondary">로그인 페이지로</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

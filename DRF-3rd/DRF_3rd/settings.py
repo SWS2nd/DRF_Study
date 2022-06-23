@@ -65,7 +65,8 @@ ROOT_URLCONF = 'DRF_3rd.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 처음엔 빈 리스트이며, template을 Root 디렉토리에서 모아서 관리하기 위해 아래와 같이 작성해 줌(Root 디렉토리에 template만 모아놓은 templates 폴더 생성해서 사용)
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

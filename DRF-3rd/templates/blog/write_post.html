@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container timeline-container">
+        <div class="row">
+            <!-- 왼쪽 컬럼 -->
+            <div class="col-md-3">
+            </div>
+            <!-- 오른 쪽 컬럼-->
+            <div class="col-md-7">
+                <!-- 글을 작성 하는 곳 -->
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">Post 작성</h5>
+                                        <form action="{% url 'blog:writepost' %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="form-group mb-2">
+                                                <div class="mt-3 row">
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="title" id="title"
+                                                                placeholder="제목을 입력해 주세요">
+                                                    </div>
+                                                </div>
+                                                <textarea class="form-control" style="resize: none" name='my-content' id="my-content" placeholder="내용을 입력해 주세요"></textarea>
+                                                <div class="mt-3 row">
+                                                    <label for="category"
+                                                           class="col-sm-2 col-form-label">카테고리</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="category" id="category"
+                                                               placeholder="콤마(,)로 구분 해 주세요">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- 만약 넘겨받은 error 값이 있다면, -->
+                                            {% if error %}
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ error }}
+                                            </div>
+                                            {% endif %}
+                                            <!-- 만약 넘겨받은 messages 값이 있다면, -->
+                                            {% if messages %}
+                                                {% for message in messages %}
+                                                    {{message}}
+                                                {% endfor %}
+                                            {% endif %}
+                                            <button type="submit" class="btn btn-primary" style="float:right;">작성하기</button>
+                                        </form>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!-- 작성 된 글이 나오는 곳 -->
+                <div class="row">
+                    <!-- tweet app의 views.py로부터 넘겨받은 tweet 키 값을 이용! -->
+                    <!-- tweet 변수에는 역순으로 정렬된 tweet 테이블의 모든 게시글들이 들어있다. -->
+                    {% for tw in tweet %}
+                        <div class="col-md-12 mb-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- 글 삭제하기 부분 -->
+                                    <!-- 이 글을 작성한 author가 지금 로그인 되어있는 user라면, -->
+                                    {% if tw.author == user %}
+                                        <div style="text-align: right">
+                                            <!-- 글을 삭제할 수 있는 삭제 버튼을 보여줄 것임. -->
+                                            <a href="/tweet/delete/{{ tw.id }}">
+                                                <span class="badge rounded-pill bg-danger">삭제</span>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    <!-- 이 글을 작성한 author가 지금 로그인 되어있는 user가 아니라면, -->
+                                    <div style="text-align: right">
+                                        <!-- 삭제 버튼은 안보이고 보기 버튼만 보여줄 것임. -->
+                                        <a href="/tweet/{{ tw.id }}">
+                                            <span class="badge rounded-pill bg-success">보기</span>
+                                        </a>
+                                    </div>
+                                    <!-- 작성된 글 보여지는 부분 -->
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <h5 class="mt-0">{{ tw.content }}</h5>
+                                            {% if tw.tags.all %}
+                                                {% for tag in tw.tags.all %}
+                                                    <a style="text-decoration: none"
+                                                       href="{% url 'tagged_object_list' tag.name %}">
+                                                    <span class="badge rounded-pill bg-success">
+                                                        {{ tag.name }}
+                                                    </span>
+                                                    </a>
+                                                {% endfor %}
+                                                -<a style="text-decoration: none"
+                                                    href="{% url 'tag_cloud' %}">TagCloud</a>
+                                            {% endif %}
+                                        </div>
+                                        <div style="text-align: right">
+                                            <!-- tw.author.username 이 부분은 author이 FK 이고, UserModel에 연결되어있기 때문에 이렇게 쓸 수 있다. -->
+                                            <!-- tw.created_at|timesince 에서 장고가 기본으로 제공해주는 timesince를 써주면 몇월 몇일 몇시 같은 말이 나오지 않는다. -->
+                                            <span style="font-size: small">{{ tw.author.username }}-{{ tw.created_at|timesince }} 전</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock %}
