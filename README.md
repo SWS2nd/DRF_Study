@@ -1,6 +1,8 @@
 # DRF_study
 Django Rest Framework study repository
 
-Located assignment : DRF-3rd directory
+<hr>
 
-Located DRF Board Project : DRF-board-project directory
+<b>Located assignment : DRF-3rd directory</b>
+
+<b>Located DRF Board Project : DRF-board-project directory</b>
