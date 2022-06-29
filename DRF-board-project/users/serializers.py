@@ -69,6 +69,6 @@ class LoginSerializer(serializers.Serializer):
             token = TokenModel.objects.get(user=user) # 토큰에서 해당 유저를 찾아 응답
             return token
         raise serializers.ValidationError(
-            {'error': '해당 credential로 로그인 할 수 없습니다.'}
+            {'error': '해당 credential로 로그인 할 수 없습니다.'} # username 또는 password가 틀렸을 경우
         )
     
