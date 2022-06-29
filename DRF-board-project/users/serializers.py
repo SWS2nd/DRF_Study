@@ -33,7 +33,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, required=True) # 비밀번호 확인
     
     class Meta:
-        model = UserModel
+        model = UserModel # django의 기본 UserModel을 사용
         fields = ('username', 'password', 'password2', 'email')
     
     # 시리얼라이저의 validate 메소드 활용
