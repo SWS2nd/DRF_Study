@@ -10,6 +10,8 @@ from rest_framework.authtoken.models import Token as TokenModel
 from rest_framework.validators import UniqueValidator # 이메일 중복 방지 시 검증 도구
 
 
+# 아래와 같은 작업을 뷰, 모델, 시리얼라이저에서 구현 가능하며, 되도록이면 협업과 유지보수를 위해 각 부분의 역할에 맞게 분리해도 됨.
+
 # 회원가입 시리얼라이저
 class RegisterSerializer(serializers.ModelSerializer):
     # 시리얼라이저의 필드들 : serializer 필드는 primitive value와 internal datatypes간의 변환을 핸들링. 또한 input value에 대한 validating도 해줌.
