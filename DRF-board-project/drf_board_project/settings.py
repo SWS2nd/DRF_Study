@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     
     # apps
     'users',
+    'posts',
     
     # other apps
     'corsheaders', # CORS 관련
