@@ -11,7 +11,9 @@ from rest_framework.validators import UniqueValidator # 이메일 중복 방지 
 
 # Django의 기본 authenticate 함수, 직접 설정한 DefaultAuthBackend인 Token 방식으로 유저를 인증. 
 # settings.py의 LANGUAGE_CODE 위에 위치 시킴.
-from django.contrib.auth import authenticate 
+from django.contrib.auth import authenticate
+
+from .models import Profile as ProfileModel
 
 
 # 아래와 같은 작업을 뷰, 모델, 시리얼라이저에서 구현 가능하며, 되도록이면 협업과 유지보수를 위해 각 부분의 역할에 맞게 분리해도 됨.
@@ -48,6 +50,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     # 시리얼라이저의 create 메소드 활용
     # CREATE 요청에 대해 create 메소드를 오버라이딩하여 유저를 생성하고 토큰을 생성하게 함.
     def create(self, validated_data):
+        print(validated_data, type(validated_data))
         user = UserModel.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -56,6 +59,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         token = TokenModel.objects.create(user=user)
         return user
+
 
 # 로그인 시리얼라이저
 # 사용자가 ID/PW를 입력하여 요청 시 이를 확인하여 그에 해당하는 토큰을 응답하기만 하면 되기에 ModelSerializer를 사용할 필요가 없음.
@@ -71,4 +75,10 @@ class LoginSerializer(serializers.Serializer):
         raise serializers.ValidationError(
             {'error': '해당 credential로 로그인 할 수 없습니다.'} # username 또는 password가 틀렸을 경우
         )
-    
+
+
+# 프로필 시리얼라이저    
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileModel
+        fields = ('nickname', 'position', 'subjects', 'image')

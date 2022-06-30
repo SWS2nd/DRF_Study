@@ -7,13 +7,14 @@ from django.db.models.signals import post_save # 모델의 save() 메서드가 �
 from django.dispatch import receiver
 
 
+# 유저 프로필 모델
 class Profile(models.Model):
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, primary_key=True) # primary_key를 UserModel의 pk로 설정해서 통합 관리
-    nickname = models.CharField(max_length=256)
-    position = models.CharField(max_length=256)
-    subjects = models.CharField(max_length=256)
+    nickname = models.CharField(max_length=256) # 닉네임
+    position = models.CharField(max_length=256) # 직종
+    subjects = models.CharField(max_length=256) # 관심사
     # upload_to 옵션으로 이미지가 업로드 될 경로를 지정해주고, default 옵션으로 이미지를 선택하지 않았을 시 대신 올라갈 기본값을 설정.
-    image = models.ImageField(upload_to='profile/', default='default.png') 
+    image = models.ImageField(upload_to='profile/', default='default.png') # 프로필 이미지 
 
 
 # User 모델이 save() 메서드가 호출 된 후 즉, post_save 이벤트를 발생시켰을 때 해당 이벤트가 일어났다는 사실을 받아서, 
