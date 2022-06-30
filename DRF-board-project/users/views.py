@@ -55,6 +55,7 @@ class LoginView(generics.GenericAPIView): # 모델에 영향을 주지 않기 �
 
 
 # 프로필에서 만들어야 될 기능은 조회 및 수정 기능
+# 조회는 누구나 가능해야 하나, 수정은 로그인 한 현재 사용자만 하도록 해야함. -> users app/permissions.py에 CustomReadOnly 클래스 생성함.
 # 프로필 뷰
 class ProfileView(generics.RetrieveUpdateAPIView): # generics.RetrieveUpdateAPIView : 조회/수정(get, put, patch 메소드 핸들러 제공)
     queryset = ProfileModel.objects.all()
