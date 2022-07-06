@@ -23,5 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
-    path('posts/', include('posts.urls')),
+    # posts.urls는 viewsets와 router를 사용하여 router에 posts라는 이름으로 설정해 주었기 때문에
+    # 여기 path에 'posts'라고 쓰게 될 경우, 경로는 localhost:8000/posts/posts/ 가 될 것이므로 이곳에는 별도의 경로 이름을 설정해 주지 않고 불러옴.
+    path('', include('posts.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 미디어 파일 경로를 프로젝트 URL에 매칭

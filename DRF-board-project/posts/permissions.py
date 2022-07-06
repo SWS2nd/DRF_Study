@@ -6,7 +6,7 @@ class CustomReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method == 'GET': # 글 조회는 누구나 가능 하도록 설정
             return True
-        return request.user.is_authenticated # GET(조회) 이외 다른 작업들은 인증된 사용자만 가능하도록 설정
+        return request.user.is_authenticated # 글 생성은 인증된 사용자만 가능하도록 설정
     
     # 각 포스트(객체)별 권한 설정
     def has_object_permission(self, request, view, obj): # 프로필 전체 권한이 아닌 각 프로필 객체의 권한을 건드리므로 has_object_permission() 메소드를 활용
