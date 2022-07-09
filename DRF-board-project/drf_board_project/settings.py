@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from . import local_settings
+# from . import local_settings
 import os
 
 
@@ -23,7 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = local_settings.SECRET_KEY
+# SECRET_KEY = local_settings.SECRET_KEY
+SECRET_KEY = 'django-insecure-+(76_gqo&70+_dpff0$r%xvk%wa*r*rnjb+r(3rvl42gqp6vt9'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
