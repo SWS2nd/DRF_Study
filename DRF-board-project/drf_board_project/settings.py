@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     
     # other apps
     'corsheaders', # CORS 관련
+    'django_filters', # 필터링 기능을 제공해주는 공식 패키지
 ]
 
 MIDDLEWARE = [
@@ -121,10 +122,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# 프로젝트의 인증 방식으로 토큰 방식을 사용하겠음
+# Rest Framework 추가 적용 옵션
 REST_FRAMEWORK = {
+    # 프로젝트의 인증 방식으로 토큰 방식을 사용하겠음
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+    ],
+    # 아래 DEFAULT_FILTER_BACKENDS 옵션의 경우 해당 프로젝트의 기본 필터링 도구를 설치한 django_filters 패키지로 대체 하겠다는 옵션.
+    # 이 옵션을 사용하면 이후에 django-filter 모듈을 뷰와 같은 코드에서 직접 불러오지 않아도 잘 적용됨. 단, 프로젝트 전역에 적용되므로 주의가 필요.
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
     ],
 }
 

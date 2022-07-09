@@ -1,3 +1,6 @@
+# view 마다 필터 설정할 때 사용(settings.py에 이미 등록해서 상관 없음)
+from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import viewsets
 
 from users.models import Profile as ProfileModel
@@ -16,6 +19,8 @@ from .serializers import PostSerializer, PostCreateSerializer
 class PostViewSet(viewsets.ModelViewSet):
     queryset = PostModel.objects.all()
     permission_classes = [CustomReadOnly]
+    filter_backends = [DjangoFilterBackend] # 필터링 설정
+    filterset_fields = ['author', 'likes'] # 필터링 필드 설정
     
     # REST 프레임워크에 포함된 기본 라우터는 list/create/retrieve/update/destroy 스타일 작업의 표준 세트에 대한 경로를 제공.
     def get_serializer_class(self):
