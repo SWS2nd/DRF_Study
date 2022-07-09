@@ -133,6 +133,13 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
+    # Pagination : 한 번의 API 요청으로 가져올 수 있는 데이터 수를 제한하는 기능.
+    'DEFAULT_PAGINATION_CLASS':
+        # 아래 사용한 PageNumberPagination 이외에도 다양한 Pagination 기능이 있음.(drf 공식 홈페이지/api-guide/pagination 참고)
+        'rest_framework.pagination.PageNumberPagination',
+        # 한 페이지에 보여질 데이터의 갯수를 3개로 제한함.
+        'PAGE_SIZE':
+            3,
 }
 
 
