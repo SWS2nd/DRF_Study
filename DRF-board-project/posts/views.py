@@ -3,6 +3,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import viewsets
 
+# 좋아요 기능 추가(간단하기에 함수형 뷰로 작성하기 위한 라이브러리들 import)
+# GET 요청을 받는 함수형 뷰라는 설정과 로그인 권한이 필요하다는 설정을 위함.
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+# 만약 객체가 존재하지 않을 때 get()을 이용하여 Http404 예외를 발생시킴.
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+
 from users.models import Profile as ProfileModel
 from .models import Post as PostModel
 from .permissions import CustomReadOnly
@@ -32,3 +40,16 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         profile = ProfileModel.objects.get(user=self.request.user) # 현재 게시글 생성을 요청한 사용자의 프로필
         serializer.save(author=self.request.user, profile=profile) # 해당 시리얼라이저의 author, profile에 요청한 사용자의 프로필과 요청한 사용자를 작성자로 하여 저장.
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    post = get_object_or_404(PostModel, pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    
+    return Response({'status': 'ok'})
+    
