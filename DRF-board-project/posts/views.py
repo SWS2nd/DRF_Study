@@ -13,10 +13,13 @@ from rest_framework.response import Response
 
 from users.models import Profile as ProfileModel
 from .models import Post as PostModel
+from .models import Comment as CommentModel
+
 from .permissions import CustomReadOnly
-from .serializers import PostSerializer, PostCreateSerializer
+from .serializers import CommentCreateSerializer, CommentSerializer, PostSerializer, PostCreateSerializer
 
 
+# 게시글 기능
 # view 대신 viewsets 사용.
 # ViewSets 및 라우터는 표준 동작 및 표준 URL을 목표로 하는 경우 API 구현 속도를 높이는 간단한 도구
 # ViewSet을 사용하면 개체 목록과 한 개체의 세부 정보를 얻기 위해 별도의 views를 만들 필요가 없음. ViewSet은 목록과 세부 정보를 일관된 방식으로 처리함.
@@ -42,14 +45,34 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user, profile=profile) # 해당 시리얼라이저의 author, profile에 요청한 사용자의 프로필과 요청한 사용자를 작성자로 하여 저장.
 
 
+# 게시글의 좋아요 기능.
+# 간단하기에 클래스형 뷰가 아닌 함수형 뷰 형식으로 빠르게 구현.
+# 모두가 게시물의 좋아요를 볼 수 있으나, 해당 게시물에 좋아요를 누르거나 취소하는 것은 로그인 인증된 유저만 가능.
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
     post = get_object_or_404(PostModel, pk=pk)
-    if request.user in post.likes.all():
-        post.likes.remove(request.user)
-    else:
-        post.likes.add(request.user)
+    if request.user in post.likes.all(): # 해당 게시물에 좋아요를 누른 유저들 중에 요청한 유저가 있다면,(PostModel의 likes 필드는 UserModel을 참조함.)
+        post.likes.remove(request.user) # 요청한 유저를 해당 게시물의 좋아요를 누른 유저들에서 제거함.(즉, 좋아요 취소)
+    else: # 위와 반대
+        post.likes.add(request.user) # 요청한 유저를 해당 게시물의 좋아요를 누른 유저들 그룹에 포함시킴.(즉, 좋아요 추가)
     
     return Response({'status': 'ok'})
+    
+
+# 댓글 기능.
+# 모두가 댓글을 볼 수 있으나, 댓글 작성은 로그인 인증된 유저만, 댓글 수정/삭제는 해당 댓글을 작성한 유저만 가능하도록 함.
+# 위에서 작성한 PostViewSet 클래스와 거의 동일함.
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = CommentModel.objects.all()
+    permission_classes = [CustomReadOnly] # 앞서 작성한 posts app의 커스텀 퍼미션을 사용.
+    
+    def get_serializer_class(self):
+        if self.action == 'list' or 'retrieve':
+            return CommentSerializer
+        return CommentCreateSerializer
+    
+    def perform_create(self, serializer):
+        profile = ProfileModel.objects.get(user=self.request.user)
+        serializer.save(author=self.request.user, profile=profile)
     
